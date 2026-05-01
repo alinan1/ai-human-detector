@@ -1,1 +1,5 @@
 data/AI_Human.csv
+*.db
+database/*.db
+*.db
+database/*.db
