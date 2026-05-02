@@ -19,6 +19,7 @@ def setup_database():
     
     # opens connection to sqlite database file called  ai_detector.db'
     conn = sqlite3.connect('/Users/alinan/Documents/human-ai-detector/database/ai_human.db')
+    
     # saves data as a TABLE inside of my database (ai_human.db) called "texts" (if table already exists, it will be replaced) 
     # #save the table into whatever database conn is connected to
     df.to_sql('texts', conn, if_exists='replace', index=False)
