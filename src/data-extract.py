@@ -64,7 +64,7 @@ def extract_data(text):
     }
 
 def apply_data_extraction():
-    conn = sqlite3.connect('/Users/alinan/Documents/human-ai-detector/database/ai_human.db')
+    conn = sqlite3.connect('database/ai_human.db')
 
     # read the original text data from the "texts" table in the database into a dataframe
     df = pd.read_sql("SELECT * FROM texts", conn)
@@ -91,8 +91,7 @@ def apply_data_extraction():
     # Save final feature table into database
     final_df.to_sql('extracted_texts', conn, if_exists='replace', index=False)
 
-    print("Completed and saved to a table called: extracted_texts ")
-    print(final_df.head())
+    print("Completed! saved to a table called: extracted_texts ")
 
     conn.close()
 

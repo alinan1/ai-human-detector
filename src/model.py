@@ -1,7 +1,5 @@
 import sqlite3
-import os
 import pandas as pd
-
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
@@ -9,9 +7,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
 
-# ------ FILE PATH SETUP------ 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB_PATH = os.path.join(BASE_DIR, "database", "ai_human.db")
 
 # the extracted data features that we will use for training the models
 FEATURES = [
@@ -19,19 +14,16 @@ FEATURES = [
     'sentence_count',
     'avg_sentence_length',
     'vocab_diversity',
-    'punctuation_freq'
+    'punctuation_freq',
+    'avg_word_length',
+    'stopword_ratio',
+    'paragraph_count'
 ]
 
 # ------ LOAD DATA ------ 
 # Load data from SQLite database
 def load_data():
-    if not os.path.exists(DB_PATH):
-        raise FileNotFoundError(
-            f"Database not found at: {DB_PATH}\n"
-            "Please run db-setup.py and data-extract.py first."
-        )
-
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect('database/ai_human.db')
     df = pd.read_sql("SELECT * FROM extracted_texts", conn)
     conn.close()
     return df

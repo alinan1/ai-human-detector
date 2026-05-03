@@ -12,15 +12,15 @@ def clean_df(df):
 
 def setup_database():
     #load csv
-    df = pd.read_csv('/Users/alinan/Documents/human-ai-detector/data/AI_Human.csv')
+    df = pd.read_csv('data/AI_Human.csv')
     
     #clean data
     df = clean_df(df)
-    
-    # opens connection to sqlite database file called  ai_detector.db'
-    conn = sqlite3.connect('/Users/alinan/Documents/human-ai-detector/database/ai_human.db')
-    
-    # saves data as a TABLE inside of my database (ai_human.db) called "texts" (if table already exists, it will be replaced) 
+
+    # opens connection to sqlite database file called  ai_human.db'
+    conn = sqlite3.connect('database/ai_human.db')
+
+    # saves data as a TABLE inside of my database (ai_human.db) called "texts" (if table already exists, it will be replaced)
     # #save the table into whatever database conn is connected to
     df.to_sql('texts', conn, if_exists='replace', index=False)
  

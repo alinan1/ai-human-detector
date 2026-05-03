@@ -13,7 +13,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 
 def load_data():
-    conn = sqlite3.connect('/Users/alinan/Documents/human-ai-detector/database/ai_human.db') # connect to database
+    conn = sqlite3.connect('database/ai_human.db') # connect to database
     df = pd.read_sql("SELECT * FROM extracted_texts", conn) # read the data from the "extracted_texts" table in the database into a pandas dataframe
     conn.close() # close the connection to the database bc we no longer need it after loading the data
     return df # return the dataframe containing the data from the database
@@ -24,7 +24,7 @@ def _save(fig, filename):
     plt.close(fig)
 
 # Helper function to create grouped bar charts for the average comparison of features between human and AI generated texts
-def _grouped_bars(ax, avg_df, features, under_names, ylabel, title, fmt='.1f'):
+def create_bars(ax, avg_df, features, under_names, ylabel, title, fmt='.1f'):
     
     #---Bar positions and styling---
     x = np.arange(len(features)) # the x positions for the bars, based on the number of features being compared
@@ -100,13 +100,13 @@ def plot_all_features(avg_df):
     ]
 
     for ax, features, names, ylabel, title, fmt in graph:
-        _grouped_bars(ax, avg_df, features, names, ylabel, title, fmt=fmt)
+        create_bars(ax, avg_df, features, names, ylabel, title, fmt=fmt)
 
     plt.tight_layout(pad=3)
     _save(fig, 'engineered_features.png')
 
 # -------- MODEL ACCURACY GRAPH --------
-def plot_model_accuracy(results):
+def plot_modaccuracy(results):
 
     fig, ax = plt.subplots(figsize=(8, 5))
 
@@ -143,7 +143,7 @@ def plot_model_accuracy(results):
 
 
 # -------- FEATURE IMPORTANCE (RANDOM FOREST) --------
-def plot_feature_importance(model, feature_names):
+def plot_fi(model, feature_names):
 
     # feature importance data frame has two columns:
     # "Feature" which lists the names of the features, 
@@ -153,9 +153,9 @@ def plot_feature_importance(model, feature_names):
         'Importance': model.feature_importances_
     }).sort_values(by='Importance', ascending=False) # false - most to least important
 
-    fig, ax = plt.subplots(figsize=(9, 6)) # 
-    fig.patch.set_facecolor('#F7F9FC')
-    ax.set_facecolor('#F7F9FC')
+    fig, ax = plt.subplots(figsize=(10, 7)) #figsize determines the size of the plot; ax is the subplot object we will use to create the bar chart
+    fig.patch.set_facecolor("#F7FCFB") 
+    ax.set_facecolor("#F7FBFC")
 
     ax.bar(ft_df['Feature'], ft_df['Importance'], color="#4099F2", zorder=3)
 
@@ -183,12 +183,9 @@ def plot_feature_importance(model, feature_names):
 def plot_modelgraph(df, features):
     X = df[features]
     y = df['generated']
-
     X_scaled = pd.DataFrame(StandardScaler().fit_transform(X), columns=features)
 
-    X_train, X_test, y_train, y_test = train_test_split(
-        X_scaled,
-        y,
+    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y,
         test_size=0.2,
         random_state=42
     )
@@ -199,40 +196,31 @@ def plot_modelgraph(df, features):
         (RandomForestClassifier(random_state=42), "Random Forest")
     ]
 
-    results = {}
-
+    #results dictionary will store the accuracy of each model, with the model name as the key and the accuracy score as the value\
+    result_accuracy = {}
     for model, name in models:
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        accuracy = accuracy_score(y_test, predictions)
-        results[name] = accuracy
+        model.fit(X_train, y_train) # train the model on the training data (X_train and y_train)
+        predictions = model.predict(X_test) # use the trained model to make predictions on the test data (X_test)
+        accuracy = accuracy_score(y_test, predictions) # calculate the accuracy of the model's predictions by comparing them to the true labels (y_test) using the accuracy_score function from sklearn.metrics
+        result_accuracy[name] = accuracy # store the accuracy score in the result_accuracy dictionary with the model name as the key
 
         if name == "Random Forest":
-            plot_feature_importance(model, features)
+            plot_fi(model, features)
 
-    plot_model_accuracy(results)
+    plot_modaccuracy(result_accuracy)
 
 
 def run_visualizations():
     os.makedirs('visuals', exist_ok=True)
     df = load_data()
 
-    all_features = [
-        'word_count',
-        'sentence_count',
-        'avg_sentence_length',
-        'vocab_diversity',
-        'punctuation_freq',
-        'avg_word_length',
-        'stopword_ratio',
-        'paragraph_count'
-    ]
+    allfeatures = ['word_count', 'sentence_count','avg_sentence_length', 'vocab_diversity', 'punctuation_freq','avg_word_length', 'stopword_ratio','paragraph_count']
 
     # group the dataframe by the 'generated' column so we can calculate average feature values for Human and AI separately
-    avg_df = df.groupby('generated')[all_features].mean().rename(index={0.0: 'Human', 1.0: 'AI Generated'})
+    avg_df = df.groupby('generated')[allfeatures].mean().rename(index={0.0: 'Human', 1.0: 'AI Generated'})
 
     plot_all_features(avg_df)
-    plot_modelgraph(df, all_features)
+    plot_modelgraph(df, allfeatures)
     print("All visualizations completed")
 
 if __name__ == "__main__":
