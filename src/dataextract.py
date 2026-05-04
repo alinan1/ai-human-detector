@@ -1,3 +1,4 @@
+#dataextract.py
 import sqlite3
 import pandas as pd
 import re
@@ -21,29 +22,28 @@ def extract_data(text):
     # **EXAMPLE***: 200 words / 10 sentences = 20 words per sentence
     avg_sentence_length = word_count / max(sentence_count, 1)
 
-    # Percentage of unique words used in text 
+    # ratio of unique words used in text (0-1)
     # take unique words and divide by total word count to find a PROPORTION 
     # FOR EX: if theres 100 words and 50 are unique proportion is 50/100 = 0.5 which means 50% of the words are unique --> multiply by 100 to get percentage
-    vocab_diversity = (unique_words / max(word_count, 1)) * 100
+    vocab_diversity = (unique_words / max(word_count, 1)) 
 
     # Finds punctuation characters such as ., !, ?, commas, quotes, etc.
     total_pun_chars = re.findall(r'[^\w\s]', text)
 
-    # percentage of punctuation characters in text
+    # ratio of punctuation characters in text (0-1)
     # take the number of punctuations there are and divide by total number of characters in text to PROPORTION
     # FOR EX: if theres 100 characters and 10 are punctuation proportion is 10/100 = 0.1 which means 10% of the characters are punctuation --> multiply by 100 to get percentage
     # max() prevents division by zero by ensuring the denominator is at least 1 NOT REALLY NECESSARY but just a safety measure
-    punctuation_freq = (len(total_pun_chars) / max(len(text), 1)) * 100
+    punctuation_freq = (len(total_pun_chars) / max(len(text), 1)) 
 
     # average number of characters per word
     # EXAMPLE: "utilize" (7) vs "use" (3) → AI avg_word_length will be higher
     avg_word_length = sum(len(w) for w in words) / max(word_count, 1) 
  
     # stopwords are common filler words that do not add much meaning to a sentence, such as "the", "a" "is" etc.
-    # percentage of words that are stopwords (filler words like "the", "and", "I")
-    stopwords = {'the','a','an','is','in','it','of','and','to','was','that',
-                 'for','on','are','with','as','at','be','this','by','from'}
-    stopword_ratio = (sum(1 for w in words if w in stopwords) / max(word_count, 1)) * 100
+    # ratio of words that are stopwords (filler words like "the", "and", "I")
+    stopwords = {'the','a','an','is','in','it','of','and','to','was','that','for','on','are','with','as','at','be','this','by','from'}
+    stopword_ratio = (sum(1 for w in words if w in stopwords) / max(word_count, 1)) 
  
     # number of paragraphs in the text
     # paragraphs are separated by one or more blank lines (\n\n)    

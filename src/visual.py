@@ -90,12 +90,19 @@ def plot_all_features(avg_df):
 
     graph = [
         (axes[0, 0], ['word_count'], ['Word Count'], 'Average Words', 'Word Count', '.0f'),
+
         (axes[0, 1], ['sentence_count'], ['Sentence Count'], 'Average Sentences', 'Sentence Count', '.0f'),
+
         (axes[0, 2], ['avg_sentence_length'], ['Avg Sentence Length'], 'Words per Sentence', 'Average Sentence Length', '.1f'),
-        (axes[0, 3], ['vocab_diversity'], ['Vocabulary Diversity'], 'Percentage (%) of Unique Words', 'Vocabulary Diversity', '.1f'),
-        (axes[1, 0], ['punctuation_freq'], ['Punctuation Frequency'], 'Percentage (%) of Text \n Made up of Punctuation Marks', 'Punctuation Frequency', '.1f'),
+
+        (axes[0, 3], ['vocab_diversity'], ['Vocabulary Diversity'], 'Unique Words ratio (* by 100 to get %)', 'Vocabulary Diversity', '.1f'),
+
+        (axes[1, 0], ['punctuation_freq'], ['Punctuation Frequency'], 'Density of text \n Made up of Punctuation Marks (* by 100 to get %)', 'Punctuation Frequency', '.1f'),
+
         (axes[1, 1], ['avg_word_length'], ['Average Word Length'], 'Characters', 'Average Word Length', '.2f'),
-        (axes[1, 2], ['stopword_ratio'], ['Stopword Percentage'], 'Percentage (%) of Stopwords', 'Stopword Percentage', '.1f'),
+
+        (axes[1, 2], ['stopword_ratio'], ['Stopword ratio'], 'StopWord ratio (* by 100 to get %)', 'Stopword Percentage', '.1f'),
+
         (axes[1, 3], ['paragraph_count'], ['Paragraph Count'], 'Average # of Paragraphs', 'Paragraph Count', '.1f')
     ]
 

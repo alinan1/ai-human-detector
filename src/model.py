@@ -1,3 +1,4 @@
+#model.py
 import sqlite3
 import pandas as pd
 from sklearn.model_selection import train_test_split, KFold, cross_val_score, GridSearchCV
@@ -250,13 +251,20 @@ def predict_text(z_model, scaler):
         # scale the user input features using the same scaler that was used to scale the training data (important to ensure the model can make accurate predictions based on the same feature scales)
         # scaling is important because the model was trained on scaled features, so we need to apply the same scaling to the user input features to ensure they are on the same scale for accurate predictions.
         # scaling basically standardizes the feature values to have a mean of 0 and a standard deviation of 1
-        scaledUserData = scaler.transform(df) 
+        #we use col = feature because we recieved warning ab col names not matching
+        scaledUserData = pd.DataFrame(scaler.transform(df), columns=FEATURES) 
         predict = z_model.predict(scaledUserData) # use the trained model (z_model) to predict whether the user input text is human-generated (0) or AI-generated (1) based on the extracted and scaled features
 
+       
         if predict[0] == 1:  
             print("Prediction: AI-generated")
         else:
             print("Prediction: Human-written")
+
+        print("DF:", df)
+        print("Scaled:", scaledUserData)
+        print("Prediction:", predict)
+        print("Proba:", z_model.predict_proba(scaledUserData))
 
 # ----------MAIN FUNCTION ----------
 def run_models():

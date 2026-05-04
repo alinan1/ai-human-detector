@@ -1,4 +1,4 @@
-# src/db-setup.py
+# dbsetup.py
 import sqlite3
 import pandas as pd
 
