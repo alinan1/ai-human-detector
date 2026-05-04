@@ -8,6 +8,7 @@ from sklearn.metrics import classification_report, accuracy_score
 from sklearn.preprocessing import StandardScaler
 
 
+
 # the extracted data features that we will use for training the models
 FEATURES = [
     'word_count',
@@ -230,22 +231,48 @@ def run_feature_importance(best_model):
 
     print(importance_df)
 
+from dataextract import extract_data  
+#------ CUSTOM USER PREDICTION FUNCTION--------
+def predict_text(z_model, scaler):
+    print("\n--- PREDICT HUMAN vs AI GENERATED TEXT ---")
+
+    while True:
+
+        user_input = input("Enter text (type 'quit' to quit): ")
+
+        if user_input.lower() == 'quit':
+            print("Exiting...")
+            break
+
+        features = extract_data(user_input) # use the extract_data function to extract the same features from the user input text that we used for training the model (word_count, sentence_count, etc.)
+        df = pd.DataFrame([features])[FEATURES] # create a dataframe with the extracted features and ensure it has the same column order as the FEATURES list
+
+        # scale the user input features using the same scaler that was used to scale the training data (important to ensure the model can make accurate predictions based on the same feature scales)
+        # scaling is important because the model was trained on scaled features, so we need to apply the same scaling to the user input features to ensure they are on the same scale for accurate predictions.
+        # scaling basically standardizes the feature values to have a mean of 0 and a standard deviation of 1
+        scaledUserData = scaler.transform(df) 
+        predict = z_model.predict(scaledUserData) # use the trained model (z_model) to predict whether the user input text is human-generated (0) or AI-generated (1) based on the extracted and scaled features
+
+        if predict[0] == 1:  
+            print("Prediction: AI-generated")
+        else:
+            print("Prediction: Human-written")
 
 # ----------MAIN FUNCTION ----------
 def run_models():
     df = load_data()
 
-    X = df[FEATURES]  # input features for the model
-    y = df['generated']  # target variable (0 for human-generated, 1 for AI-generated)
+    X = df[FEATURES] # the input features for the model (word_count, sentence_count, etc.) that we extracted from the text and will use to train the model
+    y = df['generated'] # the target variable (0 for human-generated, 1 for AI-generated) that we want the model to learn to predict based on the input features in X
 
-    # Scaling standardizes the feature values
-    # important for models like Logistic Regression that are sensitive to feature scales
-    # also helps with convergence and performance of tree-based models.
-    #.fit_transform() computes the mean and std of each feature in X, then scales the features to have a mean of 0 and a standard deviation of 1. 
-    # The resulting scaled features are stored in a new DataFrame called X_scaled with the same column names as the original FEATURES list.
-    X_scaled = pd.DataFrame(StandardScaler().fit_transform(X), columns=FEATURES)
+    # scaling standardizes the feature values to have a mean of 0 and a standard deviation of 1
+    # which ensures that all features are on the same scale and preventing features with larger ranges from effecting the model learning process
+    scale = StandardScaler()
+    X_scaled = pd.DataFrame(scale.fit_transform(X), columns=FEATURES) #here we fit the scaler to the training data (X) and then transform it to create a new dataframe (X_scaled) with the same column names as FEATURES, but with all feature values scaled to have a mean of 0 and a standard deviation of 1.
 
-    # This split is used specifically for hyperparameter tuning.
+    # this part splits the scaled features (X_scaled) and target variable (y) into training and testing sets
+    # 80% of the data is used for training the model and 20% is used for evaluating (standard)
+    #  The random_state parameter ensures that the split is reproducible each time the code is run
     X_train, X_test, y_train, y_test = train_test_split(
         X_scaled,
         y,
@@ -253,11 +280,16 @@ def run_models():
         random_state=42
     )
 
-    run_baseline_models(X_scaled, y)
-    run_cross_validation(X_scaled, y)
-    run_feature_importance(run_hyperparameter_tuning(X_train, X_test, y_train, y_test))
+    run_baseline_models(X_scaled, y) # this function runs the baseline models (Logistic Regression, Decision Tree, Random Forest) on different train/test splits of the data (30%, 20%, 10%) to evaluate their performance based on accuracy and classification report for each split.
+    run_cross_validation(X_scaled, y) # this function runs K-Fold Cross-Validation (with 5 folds) for each of the baseline models to evaluate their performance across multiple different splits of the dataset, providing fold scores, average accuracy, and standard deviation for each model.
 
-    
+    # finds best hyperparameters for Decision Tree and Random Forest models using GridSearchCV,
+    # returns the best Random Forest model for further analysis of feature importance and user input prediction
+    best_model = run_hyperparameter_tuning(X_train, X_test, y_train, y_test)
+    run_feature_importance(best_model)
+
+    predict_text(best_model, scale)
+
     print("\nmodels ALL ran successfully!")
 
 if __name__ == "__main__":
