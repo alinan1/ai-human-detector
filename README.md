@@ -29,9 +29,10 @@ https://drive.google.com/uc?export=download&id=1T7POuIRTFrYwQKgQttN7fSOEI8cwlysN
 
 
 Steps:
-1. Download the CSV file  
-2. Place it in the `data/` folder  
-3. Ensure the file is named `AI_Human.csv`  
+1. Download the CSV file
+2. Clone the Repo
+3. Place it in the `data/` folder  
+4. Ensure the file is named `AI_Human.csv`  
 
 ---
 
