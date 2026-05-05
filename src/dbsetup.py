@@ -17,6 +17,9 @@ def setup_database():
     #clean data
     df = clean_df(df)
 
+    print(df.info()) #prints summary of dataframe, including number of non-null values in each column and data types
+    print(df.columns) #prints list of column names in the dataframe
+    
     # opens connection to sqlite database file called  ai_human.db'
     conn = sqlite3.connect('database/ai_human.db')
 
