@@ -17,6 +17,24 @@ The project follows a complete data pipeline which includes
 
 ---
 
+## Dataset
+
+The dataset is not included in this repository due to file size limitations.
+
+**Google Drive (view/download):**  
+https://drive.google.com/file/d/1T7POuIRTFrYwQKgQttN7fSOEI8cwlysN/view?usp=sharing  
+
+**Direct download link:**  
+https://drive.google.com/uc?export=download&id=1T7POuIRTFrYwQKgQttN7fSOEI8cwlysN  
+
+
+Steps:
+1. Download the CSV file  
+2. Place it in the `data/` folder  
+3. Ensure the file is named `AI_Human.csv`  
+
+---
+
 ## Setup Instructions
 
 ### 1. Clone the Repository
