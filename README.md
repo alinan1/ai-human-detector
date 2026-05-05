@@ -13,7 +13,10 @@ The project follows a complete data pipeline which includes
 4. visualization
 5. model training
 6. Conclusion
-**In addition, the system includes a customer feature where users can input their own text into the command-line and receive a classification of whether it is human-written or AI-generated**
+**In addition, the system includes a custom feature where users can input their own text into the command-line and will predict whether it is human-written or AI-generated**
+---
+## GITHUB
+https://github.com/alinan1/ai-human-detector/tree/main
 
 ---
 
