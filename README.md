@@ -97,3 +97,8 @@ python src/model.py
 2. Simply paste or type any text. 
 The system will extract the same linguistic features used during training, scale them, and run them through the best-performing Random Forest model. 
 3. It will then print wether text was AI-generated or Human written
+
+### Step 4: Create Visuals 
+```bash
+python src/visual.py
+```
