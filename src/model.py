@@ -10,7 +10,7 @@ from sklearn.preprocessing import StandardScaler
 
 
 
-# the extracted data features that we will use for training the models
+# the extracted dataa features that we will use for training the models
 FEATURES = [
     'word_count',
     'sentence_count',

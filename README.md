@@ -11,15 +11,18 @@ The project follows a complete data pipeline which includes
 2. feature extraction
 3. database storage
 4. visualization
-5. model training
-6. Conclusion
-**In addition, the system includes a custom feature where users can input their own text into the command-line and will predict whether it is human-written or AI-generated**
+5. model training + custom feature where users can input their own text into the command-line and will predict whether it is human-written or AI-generated**
+
+---
+## YOUTUBE VIDEO LINK 
+https://youtu.be/iOlVqyGJ-9o
+
 ---
 ## GITHUB
 https://github.com/alinan1/ai-human-detector/tree/main
 
 ---
-
+## HOW TO ACCESS AND DOWNLOAD CSV FIILE 
 ## Dataset
 
 The dataset is not included in this repository due to file size limitations.
@@ -39,7 +42,7 @@ Steps:
 
 ---
 
-## Setup Instructions
+## How To SETUP project before running
 
 ### 1. Clone the Repository
 
@@ -74,7 +77,7 @@ pip install pandas numpy scikit-learn matplotlib
 
 ---
 
-## How to Run the Project
+## How to RUN the Project
 
 ### Step 1: Set Up the Database
 
@@ -94,8 +97,8 @@ python src/dataextract.py
 python src/model.py
 ```
 1. Once the models finish training you will be automatically prompted in the terminal to enter your own text:
-2. Simply paste or type any text. 
-The system will extract the same linguistic features used during training, scale them, and run them through the best-performing Random Forest model. 
+2. Simply paste or type any text (we recommend)
+4. The system will extract the same linguistic features used during training, scale them, and run them through the best-performing Random Forest model. 
 3. It will then print wether text was AI-generated or Human written
 
 ### Step 4: Create Visuals 
