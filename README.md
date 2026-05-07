@@ -23,7 +23,6 @@ https://github.com/alinan1/ai-human-detector/tree/main
 
 ---
 ## HOW TO ACCESS AND DOWNLOAD CSV FIILE 
-## Dataset
 
 The dataset is not included in this repository due to file size limitations.
 
@@ -105,3 +104,7 @@ python src/model.py
 ```bash
 python src/visual.py
 ```
+---
+## MODEL RESULTS
+**model.py takes some time to run, so I included a link to the results copied directly from the terminal. This makes it easier to view the output without having to rerun the file and wait multiple times.**
+https://docs.google.com/document/d/1Ok-2fKhte0DxxlMtd6psoK1bG3x13JjpixiiIeYlcvU/edit?tab=t.0
