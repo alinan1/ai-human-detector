@@ -16,7 +16,9 @@ The project follows a complete data pipeline which includes
 ## ZIP FILE ERROR
 when accesing the code on codebench the zipfile is not openable unless downloaded therefore we recommned EITHER
 1. Download zip and open using Vscode or other platform
+
 OR
+
 2. Cloning the Github Repo
 
 ---
